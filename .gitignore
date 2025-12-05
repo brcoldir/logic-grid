@@ -1,0 +1,18 @@
+# Database (Sensitive & Binary)
+*.db
+*.sqlite
+*.sqlite3
+*.ps1
+
+# System Files
+desktop.ini
+.DS_Store
+
+# Editor / IDE Settings
+.vscode/
+*.code-workspace
+.idea/
+
+# Binaries (if you built locally)
+app
+app.exe

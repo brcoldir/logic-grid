@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>LogicGrid: Dynamic Rule Engine</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>LogicGrid: Dynamic Rule Engine</h1>
+    <p class="subtitle">A portfolio project by Ocean. Demonstrating complex UI state management and Go backend logic.</p>
+
+    <section class="card auth-card" id="authSection">
+      <div class="auth-header">
+        <div>
+          <h2>Account</h2>
+          <p class="auth-tagline">
+            Save, edit, and version your dynamic rule sets safely in the cloud.
+          </p>
+        </div>
+
+        <div id="authStatus" class="auth-status" style="display:none;">
+          <span id="authUserEmail"></span>
+
+          <a href="/account.html">
+            <button id="accountBtn" type="button">Account</button>
+          </a>
+
+          <button id="logoutBtn" type="button">Log out</button>
+          <a id="adminPortalLink" href="/admin">Admin Portal</a>
+        </div>
+
+      </div>
+
+      <div class="auth-forms">
+        <form id="loginForm" class="auth-form">
+          <h3>Log in</h3>
+          <p class="auth-form-subtitle">Welcome back. Continue where you left off.</p>
+
+          <label>
+            Email
+            <input type="email" id="loginEmail" required />
+          </label>
+          <label>
+            Password
+            <input type="password" id="loginPassword" required />
+          </label>
+
+          <button type="submit">Log in</button>
+
+          <button id="oktaLoginBtn" type="button" style="margin-top:8px;">
+            Login with Okta
+          </button>
+        </form>
+
+
+        <form id="signupForm" class="auth-form auth-form--secondary" style="margin-top:0;">
+          <h3>Create account</h3>
+          <p class="auth-form-subtitle">
+            New here? Create a free account to start building rule sets.
+          </p>
+
+          <label>
+            Email
+            <input type="email" id="signupEmail" required />
+          </label>
+          <label>
+            Password
+            <input type="password" id="signupPassword" required />
+          </label>
+
+          <button type="submit">Create account</button>
+        </form>
+      </div>
+    </section>
+
+
+    <div id="appSection" style="display:none;">
+      <section class="card">
+        <h2>AI Assistant</h2>
+        <div class="row">
+          <label style="flex:1;">
+            Instruction to AI
+            <textarea id="aiPrompt" rows="3" placeholder="Describe the change you want..."></textarea>
+          </label>
+
+          <div style="display:flex; flex-direction:column; gap:8px; min-width:160px;">
+            <button type="button" id="aiApplyBtn">
+              Ask AI to modify configuration
+            </button>            
+          </div>
+        </div>
+        <p class="auth-tagline">
+          <br> "Add a Score column" will create a Score column with the saved column defaults
+          <br> "If Score is between 4 and 7, set Result to Pass" will create score and result columns and a scoring rule
+          <br> "Create Standard Config" will open a saved configuration named Standard (If you have one)
+        </p>
+
+        <p id="aiStatus" style="font-size:12px; color:#9ca3af; margin-top:4px;"></p>
+      </section>
+      
+      <section class="card">
+        <h2>Columns</h2>
+        <div class="row">
+          <label>Number of columns
+            <input type="number" id="columnCount" min="1" max="20" value="3" />
+          </label>
+
+          <div class="hover-info">
+            <button id="buildColumnsBtn" type="button">Build Columns</button>
+            <span class="tooltip">
+              DANGER! Clicking this will wipe ALL existing column settings and rebuild from scratch.
+              <br><br>
+              Only use if you want to completely recreate your column layout.
+            </span>
+          </div>
+
+          <div class="hover-info">
+            <button id="addColumnBtn" type="button">Add Column</button>
+            <span class="tooltip">
+              This button adds a new column to the *end* of your column list.
+              <br><br>
+              To place a column in a different position, use the “Insert Column Above” button on the specific column
+              where you'd like the new column to appear in front of.
+            </span>
+          </div>
+       
+        </div>
+
+        <div id="columnsContainer"></div>
+      </section>
+
+
+      <section class="card">
+        <h2>Scoring Rules (Must define Columns first!)</h2>
+        <div class="row">
+          <button id="addScoreFnBtn" type="button">
+            Add additional Trigger/Rule
+          </button>
+
+          <div class="hover-info">
+            <button type="button" id="refreshScoringColsBtn">
+              Refresh Column List
+            </button>
+            <span class="tooltip">
+              This refreshes the available options in the column dropdowns in the scoring rules.
+              You must click this after adding a column to make the new column appear as a selectable option.
+            </span>
+          </div>
+        </div>
+
+
+        <div id="scoringContainer"></div>
+
+
+
+      </section>
+
+      
+
+      <section class="card">
+        <h2>Result</h2>
+
+        <div class="row">
+          <label style="flex: 1;">
+            Configuration Name
+            <input type="text" id="protocolName" placeholder="e.g. Loan Approval Rules v1" />
+          </label>
+
+          <button id="generateJsonBtn" style="margin-left: 0.5rem;">
+            Generate JSON
+          </button>
+
+          <div class="hover-info">
+            <button id="saveProtocolBtn">Save Config</button>
+            <span class="tooltip">
+              Saving with the same name will overwrite the existing saved configuration.
+              <br><br>
+              Saving under a new name will create a new saved configuration instead of replacing the old one.
+            </span>
+          </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 0.75rem;">
+          <label style="flex: 1;">
+            Load saved
+            <select id="savedProtocols">
+              <option value="">-- choose saved config --</option>
+            </select>
+          </label>
+          <button id="loadProtocolBtn" style="margin-left: 0.5rem;">
+            Load
+          </button>
+        </div>
+
+        <textarea id="output" rows="18" spellcheck="false"></textarea>
+      </section>
+    </div>
+  </div>
+
+  <script src="protocols.js"></script>
+  <script src="databasesetup.js"></script>
+  <script src="builder.js"></script>
+  <script src="ai.js"></script>
+  <script src="auth.js"></script>
+
+</body>
+</html>

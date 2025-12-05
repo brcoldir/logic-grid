@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ProtocolGen Admin Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Portal</h1>
+    <p class="subtitle">
+      Manage users for Xtract Skintest Protocol Generator
+    </p>
+
+    <section class="card">
+      <a href="/" style="text-decoration:none;">
+        <button type="button">⬅ Back to Builder</button>
+      </a>
+    </section>
+
+    <section class="card">
+      <h2>User Management</h2>
+
+      <div class="row">
+        <label style="flex:1;">
+          Users
+          <select id="adminUserSelect">
+            <option value="">-- choose user --</option>
+          </select>
+        </label>
+
+        <button type="button" id="promoteBtn">Promote to Admin</button>
+        <button id="demoteBtn" type="button">Demote from admin</button>
+        <button type="button" id="deleteBtn" style="background:#ef4444;color:#fff;">
+          Delete User
+        </button>
+      </div>
+
+      <div class="row">
+        <button id="approveBtn" type="button">Approve account</button>
+        <button id="unapproveBtn" type="button">Mark as pending</button>
+        <span id="approvalStatus" style="font-size:12px;color:#9ca3af;"></span>
+      </div>
+
+      <form id="adminResetForm">
+  <label>
+    New password
+    <input type="password" id="adminResetPassword" required />
+  </label>
+
+  <label>
+    Confirm new password
+    <input type="password" id="adminResetPasswordConfirm" required />
+  </label>
+
+  <button type="submit">Reset Password</button>
+</form>
+
+    </section>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

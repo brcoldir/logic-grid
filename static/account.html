@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>ProtocolGen Account</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Account</h1>
+    <p class="subtitle">Manage your password and saved protocols.</p>
+
+    <!-- Top nav -->
+    <section class="card">
+      <div class="row" style="align-items:center; justify-content:space-between;">
+        <div id="accountAuthStatus" class="auth-status" style="display:none;">
+          <span id="accountUserEmail"></span>
+          <button id="accountLogoutBtn" type="button">Log out</button>
+        </div>
+
+        <div>
+          <a href="/" style="text-decoration:none;">
+            <button type="button">⬅ Back to Builder</button>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Change password -->
+    <section class="card auth-card">
+      <h2>Change password</h2>
+      <p class="auth-tagline">
+        Update your password for this ProtocolGen account.
+      </p>
+
+      <form id="changePasswordForm" class="auth-form" style="max-width:420px;">
+        <label>
+          Current password
+          <input type="password" id="currentPassword" required />
+        </label>
+        <label>
+          New password
+          <input type="password" id="newPassword" required />
+        </label>
+        <label>
+          Confirm new password
+          <input type="password" id="confirmNewPassword" required />
+        </label>
+
+        <button type="submit">Update password</button>
+      </form>
+    </section>
+
+    <!-- Saved protocols management -->
+    <section class="card">
+      <h2>Saved protocols</h2>
+      <p class="auth-tagline">
+        Open or delete protocols saved under your account.
+      </p>
+
+      <div id="protocolListContainer">
+        <p id="noProtocolsMessage" style="font-size:13px; color:#9ca3af; margin-top:0;">
+          Loading your saved protocols...
+        </p>
+
+        <div id="protocolList" style="margin-top:10px;"></div>
+      </div>
+    </section>
+
+    <!-- Column presets management -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2>Column presets</h2>
+          <p>Manage reusable column definitions that appear in the builder presets.</p>
+        </div>
+      </div>
+<button id="newPresetBtn" class="btn">Create New Predefined Column</button>
+
+      <div class="card-body">
+        <div id="presetList" class="protocol-list">
+          <!-- Filled by account.js -->
+        </div>
+
+        <hr class="card-divider" />
+        <div id="presetEditorContainer" class="hidden">
+          <!-- everything that is currently your preset editor goes here -->
+
+          <h3>Edit Column Preset</h3>
+          <form id="presetForm" class="card">
+            <h3>Column preset editor</h3>
+
+            <div class="row">
+              <label>
+                Preset key
+                <input type="text" id="presetKeyInput" placeholder="e.g. epPlus2" />
+              </label>
+              <label>
+                Label
+                <input type="text" id="presetLabelInput" placeholder="Display label" />
+              </label>
+              <label>
+                Default order
+                <input type="number" id="presetOrderInput" placeholder="e.g. 8" />
+              </label>
+            </div>
+
+            <hr />
+
+            <h4>Column settings</h4>
+            <div class="boxed-section">
+              <div class="row">
+                <label>
+                  Column ID
+                  <input type="text" id="presetColId" placeholder="e.g. EP" />
+                </label>
+                <label>
+                  Name
+                  <input type="text" id="presetColName" placeholder="EP+2" />
+                </label>
+                <label>
+                  Abbr
+                  <input type="text" id="presetColAbbr" placeholder="EP+2" />
+                </label>
+                <label>
+                  Background color
+                  <select id="presetColBg">
+                    <option value="#FFFFFF">White</option>
+                    <option value="#DDDDDD">Light Grey</option>
+                    <option value="#E0F0FF">Light Blue</option>
+                    <option value="#FFE0E0">Light Pink</option>
+                    <option value="#FFFFE0">Light Yellow</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="row">
+                <label>
+                  <input type="checkbox" id="presetAllowInt" />
+                  Allow integers
+                </label>
+                <label>
+                  <input type="checkbox" id="presetAllowStr" />
+                  Allow strings
+                </label>
+                <label>
+                  Int min
+                  <input type="number" id="presetIntMin" placeholder="0" />
+                </label>
+                <label>
+                  Int max
+                  <input type="number" id="presetIntMax" placeholder="e.g. 30" />
+                </label>
+              </div>
+
+              <div class="row">
+                <label style="flex: 1;">
+                  String options (comma separated)
+                  <input type="text" id="presetStrOptions" placeholder="#0 , #1 , #2 , #3" />
+                </label>
+              </div>
+
+              <div class="row">
+                <label>
+                  Tab behavior
+                  <select id="presetTabBehavior">
+                    <option value="nextColumn">Next column</option>
+                    <option value="nextRow">Next row</option>
+                    <option value="nextRowPrevColumn">Next row, back one column</option>
+                  </select>
+                </label>
+
+                <label>
+                  <input type="checkbox" id="presetUseStartDil" />
+                  Use as starting dilution
+                </label>
+
+                <label>
+                  <input type="checkbox" id="presetShowWhenPrescribing" />
+                  Show when prescribing
+                </label>
+              </div>
+
+              <hr />
+
+              <h4>Autofill</h4>
+              <div class="row">
+                <label>
+                  Autofill value
+                  <input type="text" id="presetAutoFillValue" placeholder="0 or - or #3" />
+                </label>
+                <label>
+                  <input type="checkbox" id="presetAutoFillOverwrite" />
+                  Overwrite existing values
+                </label>
+                <label>
+                  <input type="checkbox" id="presetAutoFillSetNeg" />
+                  Apply to negative control
+                </label>
+                <label>
+                  <input type="checkbox" id="presetAutoFillSetPos" />
+                  Apply to positive control
+                </label>
+              </div>
+
+              <hr />
+
+              <h4>Positive values</h4>
+              <div class="row">
+                <label>
+                  <input type="checkbox" id="presetHasPositive" />
+                  Enable positive values
+                </label>
+                <label>
+                  Positive int min
+                  <input type="number" id="presetPositiveIntMin" />
+                </label>
+                <label style="flex: 1;">
+                  Positive string options
+                  <input type="text" id="presetPositiveStrOptions" placeholder="#3 , #4 , #5 , #6" />
+                </label>
+              </div>
+            </div>
+
+            <!-- hidden plumbing, no one sees this -->
+            <textarea id="presetConfigInput" style="display:none;" aria-hidden="true"></textarea>
+
+            <div class="row" style="margin-top: 12px; gap: 8px;">
+  <button type="submit">Save preset</button>
+  <button type="button" id="presetFormResetBtn" class="btn-ghost">
+    Clear form
+  </button>
+  <button type="button" id="presetCancelBtn" class="btn-ghost">
+    Cancel
+  </button>
+  <span id="presetFormError" class="error" style="display:none;"></span>
+</div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="account.js"></script>
+</body>
+
+</html>
